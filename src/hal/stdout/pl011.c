@@ -28,7 +28,7 @@
 /**
  * @brief Control register.
  */
-PRIVATE volatile uint32_t *uart = (uint32_t *)UART_ADDR;
+PRIVATE volatile uint64_t *uart = (uint64_t *)UART_ADDR;
 
 /**
  * @brief Was the device was initialized?

@@ -395,10 +395,12 @@ PUBLIC void mem_map(void)
 			 k < (pbase + size);
 			 j += PAGE_SIZE, k += PAGE_SIZE)
 		{
+
 			mmu_page_map(
 				cluster_root_pgtabs[mem_layout[i].root_pgtab_num], j, k, w, x
 			);
 		}
+		kprintf("Nb Page de %s = %d. Vbase = %lx", mem_layout[i].desc, (k-vbase)/PAGE_SIZE, vbase);
 		/*
 		 * Map underlying page table.
 		 *
@@ -410,15 +412,14 @@ PUBLIC void mem_map(void)
 				PADDR(cluster_root_pgtabs[mem_layout[i].root_pgtab_num]),
 				TRUNCATE(vbase, PGTAB_SIZE)
 		);
-		/*
-		kprintf(
-			"PGTAB_map args for %s:\npgdir = %lx\npadr = %lx\nvadr trunc = %lx",
-			mem_layout[i].desc,
-			cluster_root_pgdir,
-			PADDR(cluster_root_pgtabs[mem_layout[i].root_pgtab_num]),
-			TRUNCATE(vbase, PGTAB_SIZE)
-		);
-		*/
+
+		// kprintf(
+		// 	"PGTAB_map args for %s:\npgdir = %lx\npadr = %lx\nvadr trunc = %lx",
+		// 	mem_layout[i].desc,
+		// 	cluster_root_pgdir,
+		// 	PADDR(cluster_root_pgtabs[mem_layout[i].root_pgtab_num]),
+		// 	TRUNCATE(vbase, PGTAB_SIZE)
+		// );
 	}
 
 	/* Load virtual address space and enable MMU. */

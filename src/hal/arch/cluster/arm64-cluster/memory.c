@@ -27,6 +27,8 @@
 #include <arch/cluster/arm64-cluster/memory.h>
 #include <nanvix/const.h>
 
+static uint64_t sanity_check;
+
 /**
  * @brief Memory layout.
  */
@@ -53,17 +55,17 @@ PUBLIC struct memory_region mem_layout[MEM_REGIONS] = {
 		.root_pgtab_num = (ARM64_CLUSTER_KPOOL_BASE_VIRT >> ARM64_PGTAB_SHIFT),
 		.desc = "kpool"
 	},
-	{
-		.pbase = ARM64_CLUSTER_UART_BASE_PHYS,
-		.vbase = ARM64_CLUSTER_UART_BASE_VIRT,
-		.pend  = ARM64_CLUSTER_UART_END_PHYS,
-		.vend  = ARM64_CLUSTER_UART_END_VIRT,
-		.size  = ARM64_CLUSTER_UART_MEM_SIZE,
-		.writable = true,
-		.executable = false,
-		.root_pgtab_num = (ARM64_CLUSTER_UART_BASE_VIRT >> ARM64_PGTAB_SHIFT),
-		.desc = "uart"
-	},
+	// {
+	// 	.pbase = ARM64_CLUSTER_UART_BASE_PHYS,
+	// 	.vbase = ARM64_CLUSTER_UART_BASE_VIRT,
+	// 	.pend  = ARM64_CLUSTER_UART_END_PHYS,
+	// 	.vend  = ARM64_CLUSTER_UART_END_VIRT,
+	// 	.size  = ARM64_CLUSTER_UART_MEM_SIZE,
+	// 	.writable = false,
+	// 	.executable = false,
+	// 	.root_pgtab_num = (ARM64_CLUSTER_UART_BASE_VIRT >> ARM64_PGTAB_SHIFT),
+	// 	.desc = "uart"
+	// },
 	{
 		.pbase = ARM64_CLUSTER_GIC_BASE_PHYS,
 		.vbase = ARM64_CLUSTER_GIC_BASE_VIRT,
@@ -81,7 +83,7 @@ PUBLIC struct memory_region mem_layout[MEM_REGIONS] = {
 PUBLIC int arm64_enable_mmu(void)
 {
 	uint64_t sctlr, tmp;
-	int *check;
+	int *ttbr_check;
 
 	/* Ensure that the mmu is disabled before doing any change */
 	arm64_disable_mmu();
@@ -100,12 +102,12 @@ PUBLIC int arm64_enable_mmu(void)
 
 	__asm__ __volatile__(
 		"mrs %0, ttbr0_el1	\n\t"
-		: "=r"(check)
+		: "=r"(ttbr_check)
 		:
 		:
 	);
 
-	KASSERT((check == ((int* )root_pgdir)));
+	KASSERT((ttbr_check == ((int* )root_pgdir)));
 
 
 	asm volatile (
@@ -159,7 +161,7 @@ void arm64_cpu_setup(void)
 	uint64_t tmp;
 
 	__asm__ __volatile__(
-		"tlbi	vmalle1 	\n\t"		// Invalidate local TLB
+		"tlbi	vmalle1 	\n\t"	// Invalidate local TLB
 		"dsb nsh"
 		: :	: "memory"
 	);
@@ -231,11 +233,14 @@ void arm64_cpu_setup(void)
 
 PUBLIC void arm64_mmu_setup(void)
 {
+	sanity_check = 0xdeadbeef;
 	/* Initialise the processor for turning the MMU on. */
 	arm64_cpu_setup();
 
 	/* Turn on the MMU. */
 	arm64_enable_mmu();
+
+	KASSERT(sanity_check == 0xdeadbeef);
 
 	if (mmu_is_enabled()) {
         kprintf("[hal][mmu] MMU enable");
