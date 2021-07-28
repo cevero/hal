@@ -55,17 +55,6 @@ PUBLIC struct memory_region mem_layout[MEM_REGIONS] = {
 		.root_pgtab_num = (ARM64_CLUSTER_KPOOL_BASE_VIRT >> ARM64_PGTAB_SHIFT),
 		.desc = "kpool"
 	},
-	// {
-	// 	.pbase = ARM64_CLUSTER_UART_BASE_PHYS,
-	// 	.vbase = ARM64_CLUSTER_UART_BASE_VIRT,
-	// 	.pend  = ARM64_CLUSTER_UART_END_PHYS,
-	// 	.vend  = ARM64_CLUSTER_UART_END_VIRT,
-	// 	.size  = ARM64_CLUSTER_UART_MEM_SIZE,
-	// 	.writable = false,
-	// 	.executable = false,
-	// 	.root_pgtab_num = (ARM64_CLUSTER_UART_BASE_VIRT >> ARM64_PGTAB_SHIFT),
-	// 	.desc = "uart"
-	// },
 	{
 		.pbase = ARM64_CLUSTER_GIC_BASE_PHYS,
 		.vbase = ARM64_CLUSTER_GIC_BASE_VIRT,
@@ -76,6 +65,17 @@ PUBLIC struct memory_region mem_layout[MEM_REGIONS] = {
 		.executable = false,
 		.root_pgtab_num = (ARM64_CLUSTER_GIC_BASE_VIRT >> ARM64_PGTAB_SHIFT),
 		.desc = "gic"
+	},
+	{
+		.pbase = ARM64_CLUSTER_UART_BASE_PHYS,
+		.vbase = ARM64_CLUSTER_UART_BASE_VIRT,
+		.pend  = ARM64_CLUSTER_UART_END_PHYS,
+		.vend  = ARM64_CLUSTER_UART_END_VIRT,
+		.size  = ARM64_CLUSTER_UART_MEM_SIZE,
+		.writable = true,
+		.executable = false,
+		.root_pgtab_num = (ARM64_CLUSTER_UART_BASE_VIRT >> ARM64_PGTAB_SHIFT),
+		.desc = "uart"
 	}
 };
 
