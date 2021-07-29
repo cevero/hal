@@ -22,26 +22,40 @@
  * SOFTWARE.
  */
 
-#include <nanvix/hal/core/trap.h>
+/* Must come first. */
+#define __NEED_HAL_CORE
+
+#include <nanvix/hal/core.h>
+#include <nanvix/const.h>
+#include <nanvix/hlib.h>
+
+/*===========================================================================*
+ * __do_kcall()                                                              *
+ *===========================================================================*/
 
 /**
- * @todo TODO: provide a defailed description for this function.
+ * @brief Generic exception handler.
  */
-PUBLIC linux64_word_t linux64_core_do_kcall(
+PUBLIC int __do_kcall(
 	word_t arg0,
 	word_t arg1,
 	word_t arg2,
 	word_t arg3,
 	word_t arg4,
-	word_t kcall_nr)
+	word_t kcall_nr
+)
 {
-	return (__do_kcall(
-			arg0,
-			arg1,
-			arg2,
-			arg3,
-			arg4,
-			kcall_nr
-		)
-	);
+	int ret;
+	int modenum;
+
+	/* Set trap execution mode. */
+	modenum = core_status_set_mode(CORE_STATUS_MODE_TRAP);
+
+		/* Call kernel call. */
+		ret = do_kcall(arg0, arg1, arg2, arg3, arg4, kcall_nr);
+
+	/* Reset trap execution mode. */
+	core_status_set_mode(modenum);
+
+	return (ret);
 }

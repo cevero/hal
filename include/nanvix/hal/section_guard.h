@@ -39,6 +39,7 @@
 #define NANVIX_HAL_SECTION_GUARD_H_
 
 	#include <nanvix/hal/core/interrupt.h>
+	#include <nanvix/hal/core/status.h>
 	#include <nanvix/const.h>
 
 	/**
@@ -92,12 +93,24 @@
 	 */
 	static inline void section_guard_entry(struct section_guard * guard)
 	{
-		/* Does the current level has a lower priority than the new one? */
-		guard->changed = (guard->level > interrupts_get_level());
+		int status; /* Current core status. */
 
-		/* Sets new interrupt level and keeps the old level. */
-		if (guard->changed)
-			KASSERT((guard->level = interrupts_set_level(guard->level)) >= 0);
+		status = core_status_get_mode();
+
+		/**
+		 * Is the core in a normal execution and can it be preempted at anytime?
+		 * Yes: try changing the interrupt level.
+		 * No: don't change interrupt level.
+		 */
+		if (UNLIKELY((status == CORE_STATUS_MODE_NORMAL) || (status == CORE_STATUS_MODE_MASKED)))
+		{
+			/* Does the current level has a lower priority than the new one? */
+			guard->changed = (guard->level > interrupts_get_level());
+
+			/* Sets new interrupt level and keeps the old level. */
+			if (guard->changed)
+				KASSERT((guard->level = interrupts_set_level(guard->level)) >= 0);
+		}
 
 		/* Entry in the critical section. */
 		spinlock_lock(guard->lock);
@@ -114,11 +127,12 @@
 		spinlock_unlock(guard->lock);
 
 		/* Restore interrupt level. */
-		if (guard->changed)
+		if (UNLIKELY(guard->changed))
+		{
 			KASSERT((guard->level = interrupts_set_level(guard->level)) >= 0);
 
-		/* Restore signal. */
-		guard->changed = false;
+			guard->changed = false;
+		}
 	}
 
 /**@}*/

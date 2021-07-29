@@ -166,7 +166,7 @@
 	/**
 	 * @see rv32gc_int_enable().
 	 */
-	static inline void interrupts_enable(void)
+	static inline void __interrupts_enable(void)
 	{
 		rv32gc_int_enable();
 	}
@@ -174,7 +174,7 @@
 	/**
 	 * @see rv32gc_int_disable().
 	 */
-	static inline void interrupts_disable(void)
+	static inline void __interrupts_disable(void)
 	{
 		rv32gc_int_disable();
 	}
@@ -190,7 +190,7 @@
 	/**
 	 * @brief TODO Implement this function. 
 	 */
-	static inline int interrupts_set_level(int newlevel)
+	static inline int __interrupts_set_level(int newlevel)
 	{
 		UNUSED(newlevel);
 

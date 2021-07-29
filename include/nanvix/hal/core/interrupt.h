@@ -63,10 +63,10 @@
 
 	/* Functions */
 	#ifndef __interrupts_disable_fn
-	#error "interrupts_disable() not defined?"
+	#error "__interrupts_disable() not defined?"
 	#endif
 	#ifndef __interrupts_enable_fn
-	#error "interrupts_enable() not defined?"
+	#error "__interrupts_enable() not defined?"
 	#endif
 	#ifndef __interrupts_get_level_fn
 	#error "interrupts_get_level() not defined?"
@@ -101,6 +101,7 @@
  */
 /**@{*/
 
+	#include <nanvix/hal/core/status.h>
 	#include <nanvix/const.h>
 
 	/**
@@ -144,23 +145,47 @@
 	/**
 	 * @brief Disables all hardware interrupts.
 	 */
-	EXTERN void interrupts_disable(void);
+	static inline void interrupts_disable(void)
+	{
+		/* Set interrupt execution mode. */
+		core_status_set_mode(CORE_STATUS_MODE_INTERRUPT);
+
+		/* Disable underlying interrupts. */
+		__interrupts_disable();
+	}
 
 	/**
 	 * @brief Enables all hardware interrupts.
 	 */
-	EXTERN void interrupts_enable(void);
+	static inline void interrupts_enable(void)
+	{
+		/* Set normal execution mode. */
+		core_status_set_mode(CORE_STATUS_MODE_NORMAL);
 
-	/**
-	 * @brief Gets current interrupt level.
-	 */
-	EXTERN int interrupts_get_level(void);
+		/* Enable underlying interrupts. */
+		__interrupts_enable();
+	}
 
 	/**
 	 * @brief Change interrupt level, i.e., change the minimum interrupt
 	 * priority that can be accepted.
 	 */
-	EXTERN int interrupts_set_level(int newlevel);
+	static inline int interrupts_set_level(int newlevel)
+	{
+		/* Set interrupt execution mode. */
+		core_status_set_mode((
+			newlevel == INTERRUPT_LEVEL_LOW ?
+			  CORE_STATUS_MODE_NORMAL
+			: CORE_STATUS_MODE_MASKED
+		));
+
+		return (__interrupts_set_level(newlevel));
+	}
+
+	/**
+	 * @brief Gets current interrupt level.
+	 */
+	EXTERN int interrupts_get_level(void);
 
 	/**
 	 * @brief Registers an interrupt handler.

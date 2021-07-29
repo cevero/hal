@@ -141,7 +141,7 @@
 	/**
 	 * @see linux64_core_int_disable().
 	 */
-	static inline void interrupts_disable(void)
+	static inline void __interrupts_disable(void)
 	{
 		linux64_interrupts_disable();
 	}
@@ -149,7 +149,7 @@
 	/**
 	 * @see linux64_interrupts_enable().
 	 */
-	static inline void interrupts_enable(void)
+	static inline void __interrupts_enable(void)
 	{
 		linux64_interrupts_enable();
 	}
@@ -165,7 +165,7 @@
 	/**
 	 * @see linux64_interrupts_set_level().
 	 */
-	static inline int interrupts_set_level(int newlevel)
+	static inline int __interrupts_set_level(int newlevel)
 	{
 		return (linux64_interrupts_set_level(newlevel));
 	}

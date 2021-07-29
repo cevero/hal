@@ -271,7 +271,7 @@ _kcall:
 		/*
 		 * Call kcall handler.
 		 */
-		l.jal do_kcall
+		l.jal __do_kcall
 		l.nop
 
 		/* Copy return value to the user stack. */

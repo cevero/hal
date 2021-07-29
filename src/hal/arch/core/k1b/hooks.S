@@ -274,7 +274,7 @@ _k1b_do_kcall:
 		 */
 		_redzone_alloc
 		;;
-		call do_kcall
+		call __do_kcall
 		;;
 		_redzone_free
 		;;

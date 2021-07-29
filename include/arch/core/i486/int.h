@@ -163,7 +163,7 @@
 	/**
 	 * @see i486_int_enable()
 	 */
-	static inline void interrupts_enable(void)
+	static inline void __interrupts_enable(void)
 	{
 		i486_int_enable();
 	}
@@ -171,7 +171,7 @@
 	/**
 	 * @see i486_int_disable()
 	 */
-	static inline void interrupts_disable(void)
+	static inline void __interrupts_disable(void)
 	{
 		i486_int_disable();
 	}
@@ -187,7 +187,7 @@
 	/**
 	 * @see i486_lpic_lvl_set().
 	 */
-	static inline int interrupts_set_level(int newlevel)
+	static inline int __interrupts_set_level(int newlevel)
 	{
 		return (i486_lpic_lvl_set(newlevel));
 	}
