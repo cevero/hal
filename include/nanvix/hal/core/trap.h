@@ -168,6 +168,18 @@
 		word_t arg4,
 		word_t kcall_nr);
 
+	/**
+	 * @brief Generic exception handler.
+	 */
+	EXTERN int __do_kcall(
+		word_t arg0,
+		word_t arg1,
+		word_t arg2,
+		word_t arg3,
+		word_t arg4,
+		word_t kcall_nr
+	);
+
 /**@}*/
 
 #endif /* NANVIX_HAL_CORE_TRAP_H_ */

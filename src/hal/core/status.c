@@ -22,59 +22,51 @@
  * SOFTWARE.
  */
 
-#ifndef __unix64__
-
 /* Must come first. */
-#define __NEED_HAL_CORE
+#define __NEED_HAL_CLUSTER
 
-#include <nanvix/hal/core.h>
+#include <nanvix/hal/cluster.h>
 #include <nanvix/const.h>
 #include <nanvix/hlib.h>
 
+/**
+ * @brief Status per core.
+ *
+ * @see include/hal/core/status.h
+ */
+PRIVATE struct core_status cores_status[CORES_NUM];
+
 /*============================================================================*
- * core_halt()                                                                *
+ * core_status_set_mode()                                                     *
  *============================================================================*/
 
 /**
- * The core_halt() function halt the underlying core.
- * After halting a core, instruction execution cannot be
- * resumed on it.
- *
- * @author João Vicente Souto
+ * @brief Set execution mode.
  */
-PUBLIC NORETURN void core_halt(void)
+PUBLIC int core_status_set_mode(int mode)
 {
-	kprintf("[hal][core] halting...");
+	int coreid;
+	int oldmode;
 
-	/* Disable all interrupts. */
-	interrupts_disable();
+	/* Valid mode. */
+	KASSERT(WITHIN(mode, CORE_STATUS_MODE_NORMAL, CORE_STATUS_MODE_LIMIT));
 
-	/* Stay here forever. */
-	UNREACHABLE();
+	coreid = core_get_id();
+
+	oldmode = cores_status[coreid].mode;
+	cores_status[coreid].mode = mode;
+
+	return (oldmode);
 }
 
 /*============================================================================*
- * core_setup()                                                               *
+ * core_status_get_mode()                                                     *
  *============================================================================*/
 
 /**
- * The core_setup() function initializes all architectural structures
- * of the underlying core. It initializes the Memory Management Unit
- * (MMU), Interrupt Vector Table (IVT) as well as performance
- * monitoring registers.
- *
- * @author Pedro Henrique Penna
+ * @brief Get execution mode.
  */
-PUBLIC void core_setup(void *stack)
+PUBLIC int core_status_get_mode(void)
 {
-	kprintf("[hal][core] booting up core...");
-
-	core_status_set_mode(CORE_STATUS_MODE_INTERRUPT);
-	mmu_setup();
-	perf_setup();
-	ivt_setup(stack);
+	return (cores_status[core_get_id()].mode);
 }
-
-#else
-typedef int make_iso_compilers_happy;
-#endif

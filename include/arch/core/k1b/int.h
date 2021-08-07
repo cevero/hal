@@ -186,7 +186,7 @@
 	/**
 	 * @see k1b_hwint_enable().
 	 */
-	static inline void interrupts_enable(void)
+	static inline void __interrupts_enable(void)
 	{
 		k1b_int_enable();
 	}
@@ -194,7 +194,7 @@
 	/**
 	 * @see k1b_hwint_disable().
 	 */
-	static inline void interrupts_disable(void)
+	static inline void __interrupts_disable(void)
 	{
 		k1b_int_disable();
 	}
@@ -210,7 +210,7 @@
 	/**
 	 * @see k1b_pic_lvl_set().
 	 */
-	static inline int interrupts_set_level(int newlevel)
+	static inline int __interrupts_set_level(int newlevel)
 	{
 		return (k1b_pic_lvl_set(newlevel));
 	}

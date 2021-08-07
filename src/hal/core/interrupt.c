@@ -105,29 +105,38 @@ PRIVATE void do_event(int num)
  */
 PUBLIC void do_interrupt(int intnum)
 {
+	int modenum;
 	interrupt_ack(intnum);
 
-	/* Nothing to do. */
-	if (interrupt_handlers[intnum] == NULL)
-		return;
-
-	interrupt_handlers[intnum](intnum);
-
-	/*
-	 * Lets also check for external interrupt, if
-	 * there's any pending, handle.
-	 */
-	while ((intnum = interrupt_next()) != 0)
-	{
-		/* ack. */
-		interrupt_ack(intnum);
+	/* Set interrupt execution mode. */
+	modenum = core_status_set_mode(CORE_STATUS_MODE_INTERRUPT);
 
 		/* Nothing to do. */
 		if (interrupt_handlers[intnum] == NULL)
-			return;
+			goto exit;
 
 		interrupt_handlers[intnum](intnum);
-	}
+
+		/*
+		 * Lets also check for external interrupt, if
+		 * there's any pending, handle.
+		 */
+		while ((intnum = interrupt_next()) != 0)
+		{
+			/* ack. */
+			interrupt_ack(intnum);
+
+			/* Nothing to do. */
+			if (interrupt_handlers[intnum] == NULL)
+				goto exit;
+
+			/* Call handler. */
+			interrupt_handlers[intnum](intnum);
+		}
+
+exit:
+	/* Set interrupt execution mode. */
+	core_status_set_mode(modenum);
 }
 
 /**

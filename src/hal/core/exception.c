@@ -23,6 +23,7 @@
  */
 
 #include <nanvix/hal/core/exception.h>
+#include <nanvix/hal/core/status.h>
 #include <nanvix/const.h>
 #include <nanvix/hlib.h>
 #include <posix/errno.h>
@@ -66,13 +67,21 @@ PRIVATE NORETURN void default_handler(
 PUBLIC void do_exception(const struct exception *excp, const struct context *ctx)
 {
 	int excpnum;
+	int modenum;
 	exception_handler_t handler;
 
-	/* Nothing to do. */
-	excpnum = exception_get_num(excp);
-	handler = exceptions[excpnum].handler;
+	/* Set exception execution mode. */
+	modenum = core_status_set_mode(CORE_STATUS_MODE_EXCEPTION);
 
-	handler(excp, ctx);
+		/* Nothing to do. */
+		excpnum = exception_get_num(excp);
+		handler = exceptions[excpnum].handler;
+
+		/* Call handler. */
+		handler(excp, ctx);
+
+	/* Reset exception execution mode. */
+	core_status_set_mode(modenum);
 }
 
 /*===========================================================================*

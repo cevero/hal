@@ -42,6 +42,7 @@
 	#include <nanvix/hal/core/tlb.h>
 	#include <nanvix/hal/core/trap.h>
 	#include <nanvix/hal/core/upcall.h>
+	#include <nanvix/hal/core/status.h>
 	#include <nanvix/const.h>
 
 /*============================================================================*

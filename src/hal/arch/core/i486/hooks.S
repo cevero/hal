@@ -203,7 +203,7 @@ i486_kcall:
 		pushl %eax
 
 		/* Handle system call. */
-		call do_kcall
+		call __do_kcall
 
 		/* Wipe out system call parameters. */
 		addl $6*I486_WORD_SIZE, %esp
