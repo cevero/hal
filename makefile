@@ -61,7 +61,8 @@ export LIBDIR     := $(ROOTDIR)/lib
 export LINKERDIR  := $(BUILDDIR)/$(TARGET)/linker
 export MAKEDIR    := $(BUILDDIR)/$(TARGET)/make
 export SRCDIR     := $(ROOTDIR)/src
-export TOOLSDIR   := $(ROOTDIR)/utils
+export TOOLSDIR   := /home/reinaldo/workspace/riscv
+#export TOOLSDIR   := $(ROOTDIR)/utils
 
 #===============================================================================
 # Libraries and Binaries
