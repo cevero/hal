@@ -61,8 +61,8 @@ export LIBDIR     := $(ROOTDIR)/lib
 export LINKERDIR  := $(BUILDDIR)/$(TARGET)/linker
 export MAKEDIR    := $(BUILDDIR)/$(TARGET)/make
 export SRCDIR     := $(ROOTDIR)/src
-export TOOLSDIR   := /home/reinaldo/workspace/riscv
-#export TOOLSDIR   := $(ROOTDIR)/utils
+#export TOOLSDIR   := $(PULP_RISCV_GCC_TOOLCHAIN)
+export TOOLSDIR   := $(ROOTDIR)/utils
 
 #===============================================================================
 # Libraries and Binaries
@@ -96,6 +96,8 @@ export CFLAGS += -fno-stack-protector
 export CFLAGS += -Wno-unused-function
 export CFLAGS += -I $(INCDIR)
 export CFLAGS += -D__NANVIX_HAL
+
+
 
 # Enable sync and portal implementation that uses mailboxes
 export CFLAGS += -D__NANVIX_IKC_USES_ONLY_MAILBOX=0
@@ -137,6 +139,23 @@ distclean: distclean-target
 documentation:
 	mkdir -p $(DOCDIR)
 	doxygen doxygen/doxygen.$(TARGET)
+
+#added rules
+ifdef USE_CLUSTER
+APP_CFLAGS += -DCLUSTER -DNUM_CLUSTER=$(USE_CLUSTER)
+ifdef NUM_CORES
+APP_CFLAGS += -DNUM_CORES=$(NUM_CORES)
+else
+APP_CFLAGS += -DNUM_CORES=1
+endif
+endif
+
+APP_CFLAGS += -Os -g
+APP_LDFLAGS += -Os -g
+
+#include $(RULES_DIR)/pmsis_rules.mk
+
+#end added rules
 
 #===============================================================================
 # Contrib Install and Uninstall Rules

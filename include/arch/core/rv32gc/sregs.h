@@ -365,11 +365,12 @@
 	 */
 	static inline void rv32gc_satp_write(rv32gc_word_t val)
 	{
-		__asm__ __volatile__(
-			"csrw satp, %0;"
-			:
-			: "r" (val)
-		);
+        (void) val;
+//		__asm__ __volatile__(
+//			"csrw satp, %0;"
+//			:
+//			: "r" (val)
+//		);
 	}
 
 #endif /* _ASM_FILE_ */

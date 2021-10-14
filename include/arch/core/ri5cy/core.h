@@ -27,6 +27,7 @@
 
 	/* Must come first. */
 	#define __NEED_CORE_REGS
+    #undef  __NEED_CORE_REGS
 	#define __NEED_CORE_TYPES
 	#define __NEED_MEMORY_TYPES
 
