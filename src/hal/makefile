@@ -70,6 +70,8 @@ C_SRC += $(wildcard stdout/console.c)
 
 else ifeq ($(TARGET), unix64)
 
+else ifeq($(TARGET), gvsoc)
+
 # C Source Files
 C_SRC += stdout/tty-virt.c
 

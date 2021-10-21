@@ -40,7 +40,7 @@
  */
 /**@{*/
 
-    #include <arch/pmsis.h>
+//    #include <arch/pmsis.h>
 	#include <arch/cluster/wolfe/cores.h>
 	#include <arch/cluster/wolfe/memory.h>
 

@@ -48,7 +48,8 @@
 	 * @name Core Features
 	 */
 	/**@{*/
-	#define CORE_HAS_ATOMICS      1 /**< Has Atomic Instructions?    */
+	#define CORE_HAS_ATOMICS      0 /**< Has Atomic Instructions?    */
+	//#define CORE_HAS_ATOMICS      1 /**< Has Atomic Instructions?    */
 	#define CORE_HAS_PMIO         0 /**< Has Programmed I/O?         */
 	#define CORE_HAS_TLB_HW       1 /**< Has Hardware-Managed TLB?   */
 	#define CORE_HAS_CACHE_HW     0 /**< Has Hardware-Managed Cache? */

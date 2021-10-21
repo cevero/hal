@@ -25,6 +25,7 @@
 #ifndef ARCH_CORE_RI5CY_REGS_H_
 #define ARCH_CORE_RI5CY_REGS_H_
 
+    #define __NEED_CORE_REGS
 	#ifndef __NEED_CORE_REGS
 		#error "do not include this file"
 	#endif

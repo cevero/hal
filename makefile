@@ -87,7 +87,7 @@ include $(MAKEDIR)/makefile.hal
 
 # Compiler Options
 export CFLAGS += -std=c99 -fno-builtin
-export CFLAGS += -Wall -Wextra -Werror -Wa,--warn
+export CFLAGS += -Wall -Wextra -Werror -Wa,--warn #-Wfatal-errors
 export CFLAGS += -Winit-self -Wswitch-default -Wfloat-equal
 export CFLAGS += -Wundef -Wshadow -Wuninitialized -Wlogical-op
 export CFLAGS += -Wvla # -Wredundant-decls
