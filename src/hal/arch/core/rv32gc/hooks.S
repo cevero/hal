@@ -94,7 +94,7 @@ rv32gc_do_strap:
 		 */
 		andi  t0, s2, RV32GC_SCAUSE_CAUSE
 		sw    t0, RV32GC_EXCP_NR(sp)
-		csrr  t0, stval
+		csrr  t0, sbadaddr
 		sw    t0, RV32GC_EXCP_ADDR(sp)
 		csrr  t0, sepc
 		sw    t0, RV32GC_EXCP_INSTR(sp)

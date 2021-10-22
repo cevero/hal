@@ -465,20 +465,20 @@
 	}
 
 	/**
-	 * @brief Reads the mtval register.
+	 * @brief Reads the mbadaddr register.
 	 *
-	 * @returns The value of the mtval register.
+	 * @returns The value of the mbadaddr register.
 	 */
-	static inline rv32gc_word_t rv32gc_mtval_read(void)
+	static inline rv32gc_word_t rv32gc_mbadaddr_read(void)
 	{
-		rv32gc_word_t mtval;
+		rv32gc_word_t mbadaddr;
 
 		__asm__ __volatile__(
-			"csrr %0, mtval"
-			: "=r" (mtval)
+			"csrr %0, mbadaddr"
+			: "=r" (mbadaddr)
 		);
 
-		return (mtval);
+		return (mbadaddr);
 	}
 
 	/**

@@ -67,11 +67,11 @@
 	 */
 	static inline int rv32gc_tlb_load(paddr_t pgdir)
 	{
-		rv32gc_word_t satp;
+		rv32gc_word_t sptbr;
 
-		satp = RV32_SATP_MODE_SV32 | (pgdir >> RV32GC_PAGE_SHIFT);
+		sptbr = RV32_SATP_MODE_SV32 | (pgdir >> RV32GC_PAGE_SHIFT);
 
-		rv32gc_satp_write(satp);
+		rv32gc_sptbr_write(sptbr);
 
 		return (0);
 	}

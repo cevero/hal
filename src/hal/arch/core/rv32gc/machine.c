@@ -127,23 +127,23 @@ PUBLIC void rv32gc_dump_all_csr(void)
 		rv32gc_sie_read(),
 		rv32gc_sip_read()
 	);
-	kprintf("[hal]    mtvec=%x   mcause=%x   mtval=%x",
+	kprintf("[hal]    mtvec=%x   mcause=%x   mbadaddr=%x",
 	rv32gc_mhartid_read(),
 		rv32gc_mcause_read(),
-		rv32gc_mtval_read()
+		rv32gc_mbadaddr_read()
 	);
-	kprintf("[hal]    stvec=%x   scause=%x   stval=%x",
+	kprintf("[hal]    stvec=%x   scause=%x   sbadaddr=%x",
 		rv32gc_stvec_read(),
 		rv32gc_scause_read(),
-		rv32gc_stval_read()
+		rv32gc_sbadaddr_read()
 	);
 	kprintf("[hal]     mepc=%x mhartid=%x",
 		rv32gc_mepc_read(),
 		rv32gc_mhartid_read()
 	);
-	kprintf("[hal]     sepc=%x    satp=%x",
+	kprintf("[hal]     sepc=%x    sptbr=%x",
 		rv32gc_sepc_read(),
-		rv32gc_satp_read()
+		rv32gc_sptbr_read()
 	);
 }
 

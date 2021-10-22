@@ -325,48 +325,48 @@
 	}
 
 	/**
-	 * @brief Reads the stval register.
+	 * @brief Reads the sbadaddr register.
 	 *
-	 * @returns The value of the stval register.
+	 * @returns The value of the sbadaddr register.
 	 */
-	static inline rv32gc_word_t rv32gc_stval_read(void)
+	static inline rv32gc_word_t rv32gc_sbadaddr_read(void)
 	{
-		rv32gc_word_t stval;
+		rv32gc_word_t sbadaddr;
 
 		__asm__ __volatile__(
-			"csrr %0, stval"
-			: "=r" (stval)
+			"csrr %0, sbadaddr"
+			: "=r" (sbadaddr)
 		);
 
-		return (stval);
+		return (sbadaddr);
 	}
 
 	/**
-	 * @brief Reads the satp register.
+	 * @brief Reads the sptbr register.
 	 *
-	 * @returns The value of the satp register.
+	 * @returns The value of the sptbr register.
 	 */
-	static inline rv32gc_word_t rv32gc_satp_read(void)
+	static inline rv32gc_word_t rv32gc_sptbr_read(void)
 	{
-		rv32gc_word_t satp;
+		rv32gc_word_t sptbr;
 
 		__asm__ __volatile__(
-			"csrr %0, satp"
-			: "=r" (satp)
+			"csrr %0, sptbr"
+			: "=r" (sptbr)
 		);
 
-		return (satp);
+		return (sptbr);
 	}
 
 	/**
-	 * @brief Writes to the satp register.
+	 * @brief Writes to the sptbr register.
 	 *
 	 * @param val Value to write.
 	 */
-	static inline void rv32gc_satp_write(rv32gc_word_t val)
+	static inline void rv32gc_sptbr_write(rv32gc_word_t val)
 	{
 		__asm__ __volatile__(
-			"csrw satp, %0;"
+			"csrw sptbr, %0;"
 			:
 			: "r" (val)
 		);

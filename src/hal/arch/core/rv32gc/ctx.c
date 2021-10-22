@@ -54,13 +54,13 @@ PUBLIC void rv32gc_context_dump(const struct context *ctx)
 		rv32gc_sie_read(),
 		rv32gc_sip_read()
 	);
-	kprintf("[hal]    stvec=%x   scause=%x   stval=%x",
+	kprintf("[hal]    stvec=%x   scause=%x   sbadaddr=%x",
 		rv32gc_stvec_read(),
 		rv32gc_scause_read(),
-		rv32gc_stval_read()
+		rv32gc_sbadaddr_read()
 	);
-	kprintf("[hal]     sepc=%x    satp=%x",
+	kprintf("[hal]     sepc=%x    sptbr=%x",
 		rv32gc_sepc_read(),
-		rv32gc_satp_read()
+		rv32gc_sptbr_read()
 	);
 }
